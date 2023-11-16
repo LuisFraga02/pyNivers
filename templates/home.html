@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PY Nivers</title>
+    <!-- Latest compiled and minified CSS -->
+    <!-- icone -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='lubot.ico') }}">
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body class="bg-secondary {{coisas.aniversarioDeAlguem()}} text-center" style="{{ coisas.aniversarioDeAlguem() }}">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-6 fw-bold hero">Programa pra eu lembrar o aniversario dos meus amigos</h1>
+            <p class="lead">
+                <a class="btn btn-primary btn-lg" href="/adicionar" role="button">Adicionar amigo</a>
+            </p>
+            <div class="w-100 p-1 ">
+                <h3 class="fw-bold">
+                    O proximo aniversariante é : {{coisas.proximoAniversario()[0]}} faltam
+                    {{coisas.aniversario(coisas.proximoAniversario()[2])[0]}} dias
+                </h3>
+                <h5 class="fw-bold">
+                    esse mes tem {{coisas.aniversaiosNoMes()[1]}} aniversariantes
+                </h5>
+                <h6 class="fw-bold">
+                    que são : {{coisas.aniversaiosNoMes()[0]}}
+                </h6>
+            </div>
+        </div>
+    </div>
+    <div class="container text-center">
+        <div class="row">
+            <br>
+            <div class="col align-middle">
+                <table class="table table-info table-striped table-borderless table-hover">
+                    <thead>
+                        <tr class="row">
+                            <th class="align-middle text-center col">Avatar</th>
+                            <th class="align-middle text-center col">Nome</th>
+                            <th class="align-middle text-center col">Data de Nascimento</th>
+                            <th class="align-middle text-center col">Editar</th>
+                            <th class="align-middle text-center col">Excluir</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <div>
+                            {% if amigos == [] %}
+                            <h1 class="display-6 fw-bold">não tem nenhum amigo cadastrado</h1>
+                            {% endif %}
+                            {% for a in amigos %}
+                            <tr class="row">
+                                <td class="align-middle text-center col"><img
+                                        onclick='alert(" O aniversario de {{ a.nome }} é em {{coisas.aniversario(a.nascimento)[0]}} dias.\nAproximadamente {{coisas.aniversario(a.nascimento)[1]}} meses")'
+                                        class="border border-dark rounded-2 border-2"
+                                        src='https://api.dicebear.com/6.x/thumbs/svg?seed={{a.nome}}' alt="avatar"
+                                        width="50px" height="50px"></td>
+                                <td class="align-middle text-center col">{{ a.nome }}</td>
+                                <td class="align-middle text-center col">{{ coisas.arrumaData(a.nascimento) }}</td>
+                                <td class="align-middle text-center col"><a
+                                        class="btn btn-outline-info btn-rounded border-2"
+                                        href="/editar/{{ a.id }}">Editar</a></td>
+                                <td class="align-middle text-center col"><a class="btn btn-danger"
+                                        href="/excluir/{{ a.id }}"
+                                        onclick="return confirm('deletar : {{a.nome}}?');">Excluir</a></td>
+                            </tr>
+                            {% endfor %}
+                        </div>
+                    </tbody>
+                </table>
+                <div>
+                    <h1 class="display-6 fw-bold">hoje é : {{coisas.hoje}}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
